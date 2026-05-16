@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maritime English | Exam Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ocean-dark: #040d1a;
+  --ocean-deep: #071426;
+  --ocean-mid: #0a2040;
+  --ocean-surface: #0d3060;
+  --wave: #1a5cb0;
+  --horizon: #2979d4;
+  --gold: #f5c842;
+  --gold-dim: #c9961a;
+  --signal-green: #00e08a;
+  --signal-red: #ff3d5a;
+  --signal-white: #e8f2ff;
+  --fog: #5a7aa8;
+  --text: #c8dff5;
+  --muted: #4e6f99;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--ocean-dark);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── OCEAN BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(26,92,176,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 10% 80%, rgba(7,20,38,0.9) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 90% 30%, rgba(245,200,66,0.04) 0%, transparent 60%),
+    linear-gradient(180deg, #040d1a 0%, #071426 40%, #0a2040 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animated waves */
+.waves-bg {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  overflow: hidden;
+}
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: -100%;
+  width: 300%;
+  height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,60 C150,100 350,0 600,60 C850,120 1050,20 1200,60 L1200,120 L0,120 Z' fill='%231a5cb0'/%3E%3C/svg%3E") repeat-x;
+  background-size: 600px 80px;
+  animation: waveFlow 12s linear infinite;
+}
+.wave:nth-child(2) {
+  bottom: 10px;
+  height: 60px;
+  opacity: 0.6;
+  animation: waveFlow 8s linear infinite reverse;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,60 C200,20 400,100 600,60 C800,20 1000,100 1200,60 L1200,120 L0,120 Z' fill='%230d3060'/%3E%3C/svg%3E");
+  background-size: 600px 60px;
+}
+@keyframes waveFlow {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(33.33%); }
+}
+
+/* Floating particles */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: float linear infinite;
+  opacity: 0;
+}
+@keyframes float {
+  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: 0.4; }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(-20px) translateX(30px); opacity: 0; }
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 50px 0 36px;
+  text-align: center;
+  position: relative;
+}
+.compass-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+  animation: compassSpin 20s linear infinite;
+  filter: drop-shadow(0 0 16px rgba(245,200,66,0.4));
+}
+@keyframes compassSpin {
+  0%, 40% { transform: rotate(0deg); }
+  50% { transform: rotate(8deg); }
+  60%, 100% { transform: rotate(0deg); }
+}
+.badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 2px;
+}
+.badge-imo { background: var(--wave); color: #fff; }
+.badge-colregs { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid rgba(245,200,66,0.3); }
+header h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(36px, 8vw, 64px);
+  font-weight: 800;
+  color: var(--signal-white);
+  letter-spacing: 2px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+header h1 em {
+  color: var(--gold);
+  font-style: normal;
+  text-shadow: 0 0 40px rgba(245,200,66,0.3);
+}
+.header-sub {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 300;
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+.header-divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 20px auto 0;
+}
+
+/* ── MODE SELECTOR (shown before quiz starts) ── */
+#modeSelector {
+  background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-mid));
+  border: 1px solid rgba(26,92,176,0.4);
+  border-radius: 16px;
+  padding: 36px 28px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+#modeSelector h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--signal-white);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+#modeSelector p { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+
+.config-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.config-block {
+  flex: 1;
+  min-width: 180px;
+  text-align: left;
+}
+.config-block label {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--fog);
+  margin-bottom: 8px;
+}
+.config-block select,
+.config-block input[type=range] {
+  width: 100%;
+}
+.config-block select {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  padding: 10px 14px;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a7aa8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.config-block select:focus { border-color: var(--horizon); }
+.config-block select option { background: #0a2040; }
+
+.rule-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.rule-chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.rule-chip.selected {
+  background: rgba(26,92,176,0.3);
+  border-color: var(--horizon);
+  color: var(--signal-white);
+}
+.rule-chip:hover:not(.selected) { border-color: var(--fog); color: var(--text); }
+
+.rule-filter-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--fog);
+  margin-bottom: 10px;
+  text-align: left;
+}
+.mode-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.start-btn {
+  flex: 1;
+  min-width: 160px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.start-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s;
+}
+.start-btn:hover::after { background: rgba(255,255,255,0.06); }
+.start-btn.exam {
+  background: linear-gradient(135deg, #1a5cb0, #2979d4);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(26,92,176,0.4);
+}
+.start-btn.study {
+  background: rgba(245,200,66,0.1);
+  border: 1px solid rgba(245,200,66,0.35);
+  color: var(--gold);
+}
+.start-btn:hover { transform: translateY(-2px); }
+.start-btn:active { transform: translateY(0); }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.stat {
+  flex: 1;
+  min-width: 90px;
+  background: var(--ocean-deep);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 12px 10px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.stat::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+}
+.stat.stat-score::before { background: linear-gradient(90deg, var(--wave), var(--horizon)); }
+.stat.stat-correct::before { background: var(--signal-green); }
+.stat.stat-wrong::before { background: var(--signal-red); }
+.stat.stat-remain::before { background: var(--fog); }
+.stat.stat-timer::before { background: var(--gold); }
+.stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--signal-white);
+  line-height: 1;
+}
+.stat-val.green { color: var(--signal-green); }
+.stat-val.red { color: var(--signal-red); }
+.stat-val.gold { color: var(--gold); }
+.stat-val.urgent { color: var(--signal-red); animation: pulse 0.5s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+.stat-lbl {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* ── PROGRESS ── */
+.progress-wrap {
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  height: 4px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--wave), var(--horizon), var(--gold));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+/* ── QUESTION MAP ── */
+.q-map {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+.q-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: default;
+  transition: all 0.2s;
+  user-select: none;
+}
+.q-dot.clickable { cursor: pointer; }
+.q-dot.clickable:hover { border-color: var(--horizon); color: var(--horizon); }
+.q-dot.answered-correct { background: rgba(0,224,138,0.15); border-color: var(--signal-green); color: var(--signal-green); }
+.q-dot.answered-wrong   { background: rgba(255,61,90,0.15);  border-color: var(--signal-red);   color: var(--signal-red); }
+.q-dot.current          { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,0.1); }
+
+/* ── TIMER RING ── */
+.timer-ring-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.timer-svg {
+  transform: rotate(-90deg);
+}
+.timer-circle-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.08);
+  stroke-width: 3;
+}
+.timer-circle {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear, stroke 0.3s;
+  stroke-dasharray: 82.47;
+  stroke-dashoffset: 0;
+}
+.timer-circle.warning { stroke: #ff8c00; }
+.timer-circle.danger  { stroke: var(--signal-red); }
+
+/* ── QUESTION CARD ── */
+.question-card {
+  background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-mid));
+  border: 1px solid rgba(26,92,176,0.3);
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin-bottom: 14px;
+  display: none;
+  animation: slideIn 0.3s ease forwards;
+  position: relative;
+  overflow: hidden;
+}
+.question-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--wave), var(--horizon));
+}
+.question-card.active { display: block; }
+.question-card.study-mode::before {
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.q-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.q-num {
+  background: rgba(26,92,176,0.3);
+  color: var(--signal-white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(26,92,176,0.5);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.q-rule {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: rgba(245,200,66,0.08);
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(245,200,66,0.2);
+}
+.mode-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-left: auto;
+}
+.mode-badge.exam-badge { background: rgba(26,92,176,0.2); color: var(--horizon); border: 1px solid rgba(26,92,176,0.3); }
+.mode-badge.study-badge { background: rgba(245,200,66,0.1); color: var(--gold); border: 1px solid rgba(245,200,66,0.25); }
+
+.q-text {
+  font-size: 17px;
+  color: var(--signal-white);
+  line-height: 1.65;
+  font-weight: 400;
+  margin-bottom: 22px;
+}
+
+/* ── OPTIONS ── */
+.options { display: flex; flex-direction: column; gap: 9px; }
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1.5px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.option::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: rgba(41,121,212,0.15);
+  transition: width 0.25s;
+}
+.option:hover:not(.disabled)::before { width: 100%; }
+.option:hover:not(.disabled) {
+  border-color: rgba(41,121,212,0.5);
+  color: var(--signal-white);
+}
+.option-letter {
+  min-width: 26px;
+  height: 26px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--fog);
+  transition: all 0.2s;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.option:hover:not(.disabled) .option-letter {
+  background: var(--horizon);
+  color: #fff;
+}
+.option-text { position: relative; z-index: 1; }
+.option.correct {
+  background: rgba(0,224,138,0.08);
+  border-color: var(--signal-green);
+  color: var(--signal-white);
+  animation: correctPop 0.4s ease;
+}
+@keyframes correctPop {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+.option.correct .option-letter { background: var(--signal-green); color: #000; }
+.option.wrong {
+  background: rgba(255,61,90,0.07);
+  border-color: var(--signal-red);
+  color: rgba(200,223,245,0.5);
+  animation: wrongShake 0.4s ease;
+}
+@keyframes wrongShake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.option.wrong .option-letter { background: var(--signal-red); color: #fff; }
+.option.disabled { cursor: default; }
+
+/* ── FEEDBACK ── */
+.feedback {
+  margin-top: 18px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  display: none;
+  animation: fadeUp 0.25s ease;
+}
+.feedback.show { display: block; }
+.feedback.correct-fb {
+  background: rgba(0,224,138,0.07);
+  border: 1px solid rgba(0,224,138,0.25);
+  color: #90f0c8;
+}
+.feedback.wrong-fb {
+  background: rgba(255,61,90,0.07);
+  border: 1px solid rgba(255,61,90,0.25);
+  color: #ffb3be;
+}
+.feedback.timeout-fb {
+  background: rgba(245,200,66,0.07);
+  border: 1px solid rgba(245,200,66,0.25);
+  color: #f5e0a0;
+}
+.feedback strong { color: var(--signal-white); }
+
+/* Study mode: always show feedback */
+.study-explain {
+  margin-top: 14px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  background: rgba(245,200,66,0.06);
+  border: 1px solid rgba(245,200,66,0.2);
+  color: #f5e0a0;
+}
+.study-explain strong { color: var(--gold); }
+
+/* ── NAV BUTTONS ── */
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.btn {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--wave), var(--horizon));
+  color: #fff;
+  flex: 1;
+  box-shadow: 0 4px 18px rgba(26,92,176,0.3);
+}
+.btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 22px rgba(26,92,176,0.4); }
+.btn-secondary {
+  background: rgba(255,255,255,0.05);
+  color: var(--fog);
+  border: 1px solid rgba(255,255,255,0.09);
+}
+.btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.09); color: var(--text); }
+.btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+  color: #000;
+  font-weight: 800;
+}
+.btn-gold:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+
+/* ── RESULTS ── */
+#results {
+  display: none;
+  animation: fadeUp 0.5s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.results-hero {
+  background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-mid));
+  border: 1px solid rgba(26,92,176,0.3);
+  border-radius: 20px;
+  padding: 44px 28px 36px;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.results-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--wave), var(--horizon), var(--gold));
+}
+.score-ring-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 24px;
+}
+.score-svg { width: 160px; height: 160px; transform: rotate(-90deg); }
+.score-circle-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+.score-circle { fill: none; stroke-width: 8; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 1.5s cubic-bezier(0.16,1,0.3,1); }
+.score-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.score-pct {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--signal-white);
+  line-height: 1;
+}
+.score-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.result-grade {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.result-msg {
+  color: var(--fog);
+  font-size: 15px;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+.result-score-line {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+/* ── RESULTS ANALYSIS ── */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.analysis-card {
+  background: var(--ocean-deep);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.analysis-card h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.rule-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+.rule-bar-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--fog);
+  min-width: 54px;
+}
+.rule-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.rule-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+.rule-bar-fill.full { background: var(--signal-green); }
+.rule-bar-fill.partial { background: var(--gold); }
+.rule-bar-fill.zero { background: var(--signal-red); width: 10px !important; }
+
+/* ── WRONG LIST ── */
+.wrong-list {
+  background: var(--ocean-deep);
+  border: 1px solid rgba(255,61,90,0.2);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.wrong-list h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  color: var(--signal-red);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.wrong-item {
+  font-size: 13px;
+  color: rgba(200,223,245,0.65);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  line-height: 1.5;
+}
+.wrong-item:last-child { border-bottom: none; }
+.wrong-item span { color: var(--gold); font-weight: 600; }
+
+/* ── HISTORY LIST ── */
+.history-list {
+  background: var(--ocean-deep);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.history-list h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  color: var(--fog);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px;
+}
+.history-item:last-child { border-bottom: none; }
+.history-item .h-date { color: var(--muted); font-size: 11px; }
+.history-item .h-score { font-family: 'Barlow Condensed'; font-weight: 700; font-size: 16px; }
+
+.results-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.results-actions .btn { flex: 1; min-width: 140px; padding: 14px; font-size: 15px; }
+
+/* ── SOUND TOGGLE ── */
+.top-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  user-select: none;
+}
+.icon-btn:hover { background: rgba(255,255,255,0.1); }
+.icon-btn.active { background: rgba(245,200,66,0.15); border-color: rgba(245,200,66,0.4); }
+
+/* ── TOOLTIP ── */
+.tooltip-wrap { position: relative; display: inline-block; }
+.tooltip-wrap:hover .tooltip-box { opacity: 1; pointer-events: none; }
+.tooltip-box {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  background: #0d2044;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 11px;
+  color: var(--text);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+
+/* ── FLASHCARD MODE ── */
+.start-btn.flashcard {
+  background: linear-gradient(135deg, #1a3a6b, #0e7560);
+  color: #e0fff8;
+  border: 1px solid rgba(0,224,138,0.25);
+  box-shadow: 0 6px 24px rgba(0,100,80,0.35);
+}
+.start-btn.flashcard:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,180,120,0.4); }
+
+.fc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.fc-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--signal-white);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.fc-title span { color: var(--signal-green); }
+.fc-counter {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 1px;
+  background: rgba(255,255,255,0.05);
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.fc-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.fc-progress-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.fc-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--signal-green), #00b8a0);
+  border-radius: 5px;
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  width: 0%;
+}
+.fc-stats-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.fc-stat {
+  flex: 1;
+  min-width: 80px;
+  background: var(--ocean-deep);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+}
+.fc-stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--signal-white);
+}
+.fc-stat-val.green { color: var(--signal-green); }
+.fc-stat-val.yellow { color: var(--gold); }
+.fc-stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+
+/* Card scene */
+.fc-scene {
+  perspective: 1400px;
+  width: 100%;
+  height: 340px;
+  cursor: pointer;
+  margin-bottom: 24px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.fc-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+.fc-scene.flipped .fc-card-inner { transform: rotateY(180deg); }
+
+.fc-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 36px 28px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow-y: auto;
+}
+
+/* FRONT face */
+.fc-front {
+  background: linear-gradient(145deg, #071e3d, #0d3060);
+  border: 1.5px solid rgba(26,92,176,0.5);
+  box-shadow: 0 20px 60px rgba(4,13,26,0.7), 0 0 0 1px rgba(255,255,255,0.04) inset;
+}
+.fc-front::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, var(--wave), var(--horizon));
+}
+
+/* BACK face */
+.fc-back {
+  background: linear-gradient(145deg, #071e2e, #082a1a);
+  border: 1.5px solid rgba(0,224,138,0.3);
+  box-shadow: 0 20px 60px rgba(4,13,26,0.7), 0 0 0 1px rgba(0,224,138,0.06) inset;
+  transform: rotateY(180deg);
+}
+.fc-back::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #00b88a, var(--signal-green));
+}
+
+.fc-category-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  background: rgba(26,92,176,0.2);
+  border: 1px solid rgba(26,92,176,0.35);
+  color: var(--horizon);
+}
+.fc-back .fc-category-tag {
+  background: rgba(0,224,138,0.1);
+  border-color: rgba(0,224,138,0.3);
+  color: var(--signal-green);
+}
+
+.fc-term {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(32px, 7vw, 52px);
+  font-weight: 800;
+  color: var(--signal-white);
+  letter-spacing: 1px;
+  line-height: 1.1;
+  text-shadow: 0 0 40px rgba(41,121,212,0.25);
+  margin-bottom: 12px;
+}
+.fc-tap-hint {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  animation: hintPulse 2s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+@keyframes hintPulse {
+  0%,100% { opacity: 0.5; } 50% { opacity: 1; }
+}
+.fc-tap-hint::before { content: '↻'; font-size: 16px; }
+
+/* Back content */
+.fc-arabic-term {
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 700;
+  color: var(--signal-green);
+  direction: rtl;
+  margin-bottom: 10px;
+  text-shadow: 0 0 24px rgba(0,224,138,0.3);
+}
+.fc-divider-line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,224,138,0.5), transparent);
+  margin: 10px auto 18px;
+}
+.fc-explanation {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.75;
+  direction: rtl;
+  text-align: right;
+  max-width: 480px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 10px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.fc-example-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+  direction: rtl;
+}
+
+/* Rating buttons */
+.fc-rating {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.fc-rate-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.22s;
+  position: relative;
+  overflow: hidden;
+}
+.fc-rate-btn::after {
+  content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,0);
+  transition:background 0.15s;
+}
+.fc-rate-btn:hover::after { background:rgba(255,255,255,0.08); }
+.fc-rate-btn:active { transform: scale(0.96); }
+.fc-rate-btn.knew {
+  background: rgba(0,224,138,0.12);
+  border: 1px solid rgba(0,224,138,0.35);
+  color: var(--signal-green);
+  box-shadow: 0 4px 16px rgba(0,224,138,0.15);
+}
+.fc-rate-btn.knew:hover { background: rgba(0,224,138,0.2); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,224,138,0.25); }
+.fc-rate-btn.unsure {
+  background: rgba(245,200,66,0.08);
+  border: 1px solid rgba(245,200,66,0.3);
+  color: var(--gold);
+}
+.fc-rate-btn.unsure:hover { background: rgba(245,200,66,0.15); transform: translateY(-2px); }
+.fc-rate-btn.again {
+  background: rgba(255,61,90,0.08);
+  border: 1px solid rgba(255,61,90,0.3);
+  color: var(--signal-red);
+}
+.fc-rate-btn.again:hover { background: rgba(255,61,90,0.15); transform: translateY(-2px); }
+
+.fc-nav-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.fc-nav-btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(255,255,255,0.05);
+  color: var(--fog);
+  border: 1px solid rgba(255,255,255,0.09);
+}
+.fc-nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); color: var(--text); }
+.fc-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+.fc-nav-btn.primary {
+  background: linear-gradient(135deg, var(--wave), var(--horizon));
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 18px rgba(26,92,176,0.3);
+}
+.fc-nav-btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* Done screen */
+.fc-done {
+  background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-mid));
+  border: 1px solid rgba(0,224,138,0.3);
+  border-radius: 20px;
+  padding: 48px 28px;
+  text-align: center;
+  animation: fadeUp 0.5s ease;
+}
+.fc-done-icon { font-size: 52px; margin-bottom: 16px; animation: bounceDone 0.6s ease; }
+@keyframes bounceDone {
+  0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.fc-done h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--signal-white);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.fc-done-stats {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+.fc-done-stat {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 16px 24px;
+  min-width: 100px;
+}
+.fc-done-stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+}
+.fc-done-stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+.fc-done-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+
+/* Swipe animation helpers */
+@keyframes fcSlideLeft {
+  from { opacity:1; transform:translateX(0) scale(1); }
+  to   { opacity:0; transform:translateX(-60px) scale(0.95); }
+}
+@keyframes fcSlideRight {
+  from { opacity:1; transform:translateX(0) scale(1); }
+  to   { opacity:0; transform:translateX(60px) scale(0.95); }
+}
+@keyframes fcEnter {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+.fc-anim-out-left  { animation: fcSlideLeft  0.28s ease forwards; }
+.fc-anim-out-right { animation: fcSlideRight 0.28s ease forwards; }
+.fc-anim-enter     { animation: fcEnter 0.3s ease forwards; }
+</style>
+</head>
+<body>
+
+<div class="waves-bg">
+  <div class="wave"></div>
+  <div class="wave"></div>
+</div>
+<div class="particles" id="particles"></div>
+
+<div class="container">
+
+  <header>
+    <span class="compass-icon">⚓</span>
+    <div class="badge-row">
+      <span class="badge badge-imo">Seafarer Training</span>
+      <span class="badge badge-colregs">Maritime English</span>
+    </div>
+    <h1>Maritime <em>English</em></h1>
+    <p class="header-sub">Vocabulary · Commands · Directions · Collocations</p>
+    <div class="header-divider"></div>
+  </header>
+
+  <!-- MODE SELECTOR -->
+  <div id="modeSelector">
+    <h2>⚓ Configure Your Session</h2>
+    <p>Choose your mode and number of questions</p>
+
+    <div class="config-row">
+      <div class="config-block">
+        <label>Number of Questions</label>
+        <select id="numQSelect">
+          <option value="10">10 Questions</option>
+          <option value="20">20 Questions</option>
+          <option value="50" selected>All Questions</option>
+        </select>
+      </div>
+      <div class="config-block">
+        <label>Question Order</label>
+        <select id="orderSelect">
+          <option value="original">Original Order</option>
+          <option value="shuffle">Shuffle Questions</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mode-btns">
+      <button class="start-btn exam" onclick="startQuiz('exam')">🎯 Exam Mode</button>
+      <button class="start-btn study" onclick="startQuiz('study')">📖 Study Mode</button>
+      <button class="start-btn flashcard" onclick="startFlashcards()">🃏 Flashcards</button>
+    </div>
+  </div>
+
+  <!-- TOP CONTROLS (shown during quiz) -->
+  <div class="top-controls" id="topControls" style="display:none">
+    <div class="tooltip-wrap">
+      <div class="icon-btn" id="soundBtn" onclick="toggleSound()">🔊</div>
+      <div class="tooltip-box">Toggle Sound</div>
+    </div>
+    <div class="tooltip-wrap">
+      <div class="icon-btn" onclick="backToMenu()">🏠</div>
+      <div class="tooltip-box">Back to Menu</div>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar" id="statsBar" style="display:none">
+    <div class="stat stat-score"><div class="stat-val gold" id="st-score">0%</div><div class="stat-lbl">Score</div></div>
+    <div class="stat stat-correct"><div class="stat-val green" id="st-correct">0</div><div class="stat-lbl">Correct</div></div>
+    <div class="stat stat-wrong"><div class="stat-val red" id="st-wrong">0</div><div class="stat-lbl">Wrong</div></div>
+    <div class="stat stat-remain"><div class="stat-val" id="st-remain">0</div><div class="stat-lbl">Remaining</div></div>
+    <div class="stat stat-timer" id="timerStat">
+      <div class="stat-val gold" id="timerVal">1:00</div>
+      <div class="stat-lbl">Time Left</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap" style="display:none">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- QUESTION MAP -->
+  <div class="q-map" id="qMap" style="display:none"></div>
+
+  <!-- QUIZ AREA -->
+  <div id="quizArea"></div>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <div class="results-hero">
+      <div class="score-ring-wrap">
+        <svg class="score-svg" viewBox="0 0 160 160">
+          <circle class="score-circle-bg" cx="80" cy="80" r="70"/>
+          <circle class="score-circle" cx="80" cy="80" r="70" id="scoreCircle"/>
+        </svg>
+        <div class="score-inner">
+          <div class="score-pct" id="scoreNum">0%</div>
+          <div class="score-label">Score</div>
+        </div>
+      </div>
+      <div class="result-grade" id="resultGrade"></div>
+      <div class="result-msg" id="resultMsg"></div>
+      <div class="result-score-line" id="resultScoreLine"></div>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card" id="ruleAnalysis">
+        <h4>📊 Performance by Section</h4>
+        <div id="ruleChart"></div>
+      </div>
+      <div class="analysis-card">
+        <h4>📈 This Attempt</h4>
+        <div id="attemptStats"></div>
+      </div>
+    </div>
+
+    <div class="wrong-list" id="wrongList" style="display:none">
+      <h3>⚠ Review These Questions</h3>
+      <div id="wrongItems"></div>
+    </div>
+
+    <div class="history-list" id="historyList">
+      <h3>🕐 Past Attempts</h3>
+      <div id="historyItems"></div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn btn-gold" onclick="restartQuiz()">🔄 Retry Same Config</button>
+      <button class="btn btn-secondary" onclick="backToMenu()">⚙ New Config</button>
+    </div>
+  </div>
+
+  <!-- FLASHCARD MODE -->
+  <div id="flashcardArea" style="display:none"></div>
+
+</div><!-- /container -->
+
+<!-- ── USAGE GUIDE ── -->
+<div id="usageGuide" style="position:relative;z-index:1;max-width:860px;margin:0 auto 0;padding:0 16px 60px;">
+
+  <div style="text-align:center;margin-bottom:36px;">
+    <div style="display:inline-block;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.2);border-radius:20px;padding:5px 20px;margin-bottom:14px;">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c9961a;">دليل الاستخدام</span>
+    </div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(24px,6vw,40px);font-weight:800;color:#e8f2ff;letter-spacing:2px;text-transform:uppercase;line-height:1.1;">كيف تستخدم الموقع؟</h2>
+    <p style="color:#4e6f99;font-size:13px;margin-top:10px;font-weight:300;letter-spacing:1px;">اختر الوضع المناسب لمستواك وهدفك التعليمي</p>
+    <div style="width:60px;height:2px;background:linear-gradient(90deg,transparent,#f5c842,transparent);margin:16px auto 0;"></div>
+  </div>
+
+  <!-- Cards row -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:40px;">
+
+    <!-- Flashcards -->
+    <div class="guide-card" style="background:linear-gradient(145deg,#071e2e,#082a1a);border:1px solid rgba(0,224,138,0.2);border-radius:16px;padding:28px 22px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#00b88a,#00e08a);border-radius:16px 16px 0 0;"></div>
+      <div style="font-size:36px;margin-bottom:14px;">🃏</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#e8f2ff;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Flashcards</div>
+      <div style="font-size:13px;color:#00e08a;font-weight:600;margin-bottom:12px;font-family:'Barlow Condensed';letter-spacing:1px;">للمبتدئين · تعلّم المصطلحات</div>
+      <p style="font-size:13px;color:#5a7aa8;line-height:1.8;direction:rtl;text-align:right;">ابدأ من هنا إن كنت مبتدئاً. انقر على البطاقة لتطّلع على المعنى العربي والشرح، ثم حدّد مدى إتقانك للمصطلح.</p>
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,224,138,0.1);">
+        <div style="font-family:'Barlow Condensed';font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#4e6f99;margin-bottom:8px;">خطوات الاستخدام</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="background:rgba(0,224,138,0.15);color:#00e08a;font-family:'Barlow Condensed';font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:1px;">1</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">انقر على البطاقة للاطّلاع على المعنى والشرح</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="background:rgba(0,224,138,0.15);color:#00e08a;font-family:'Barlow Condensed';font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:1px;">2</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">قيّم نفسك: أتقنتها / غير متأكد / مراجعة مجدداً</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="background:rgba(0,224,138,0.15);color:#00e08a;font-family:'Barlow Condensed';font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:1px;">3</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">البطاقات المُحدَّدة للمراجعة تعود تلقائياً في نهاية الجولة</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Study Mode -->
+    <div class="guide-card" style="background:linear-gradient(145deg,#071e3d,#0d3060);border:1px solid rgba(245,200,66,0.2);border-radius:16px;padding:28px 22px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#c9961a,#f5c842);border-radius:16px 16px 0 0;"></div>
+      <div style="font-size:36px;margin-bottom:14px;">📖</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#e8f2ff;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Study Mode</div>
+      <div style="font-size:13px;color:#f5c842;font-weight:600;margin-bottom:12px;font-family:'Barlow Condensed';letter-spacing:1px;">للمراجعة · بدون ضغط وقت</div>
+      <p style="font-size:13px;color:#5a7aa8;line-height:1.8;direction:rtl;text-align:right;">بعد حفظ المصطلحات من البطاقات التعليمية، انتقل إلى وضع الدراسة. لا يوجد وقت محدد، ويظهر الشرح فور الإجابة لتعزيز الفهم.</p>
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(245,200,66,0.1);">
+        <div style="font-family:'Barlow Condensed';font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#4e6f99;margin-bottom:8px;">مميزاته</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="color:#f5c842;font-size:14px;margin-top:1px;">✦</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">تظهر الإجابة الصحيحة فور الاختيار مع الشرح</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="color:#f5c842;font-size:14px;margin-top:1px;">✦</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">يمكن العودة إلى الأسئلة السابقة ومراجعتها</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="color:#f5c842;font-size:14px;margin-top:1px;">✦</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">إمكانية تصفية الأسئلة وفق الموضوع المطلوب</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exam Mode -->
+    <div class="guide-card" style="background:linear-gradient(145deg,#071426,#0a2040);border:1px solid rgba(26,92,176,0.3);border-radius:16px;padding:28px 22px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#1a5cb0,#2979d4);border-radius:16px 16px 0 0;"></div>
+      <div style="font-size:36px;margin-bottom:14px;">🎯</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#e8f2ff;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Exam Mode</div>
+      <div style="font-size:13px;color:#2979d4;font-weight:600;margin-bottom:12px;font-family:'Barlow Condensed';letter-spacing:1px;">للمتقدمين · محاكاة الامتحان</div>
+      <p style="font-size:13px;color:#5a7aa8;line-height:1.8;direction:rtl;text-align:right;">حين تشعر بالاستعداد، انتقل إلى وضع الامتحان. يُخصَّص دقيقة واحدة لكل سؤال، ولا تظهر الإجابة إلا بعد الاختيار، محاكاةً للامتحان الفعلي.</p>
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(26,92,176,0.15);">
+        <div style="font-family:'Barlow Condensed';font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#4e6f99;margin-bottom:8px;">تنبيهات مهمة</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="color:#ff3d5a;font-size:14px;margin-top:1px;">⚠</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">٦٠ ثانية لكل سؤال — راقب الوقت باستمرار</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="color:#ff3d5a;font-size:14px;margin-top:1px;">⚠</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">لا يمكن الانتقال للسؤال التالي قبل الإجابة</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;direction:rtl;">
+            <span style="color:#ff3d5a;font-size:14px;margin-top:1px;">⚠</span>
+            <span style="font-size:12px;color:#5a7aa8;line-height:1.6;">تُحفظ نتيجتك تلقائياً في سجل المحاولات</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Learning path -->
+  <div style="background:linear-gradient(135deg,#071426,#0a2040);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px 24px;margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+      <span style="font-size:22px;">🗺️</span>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#e8f2ff;letter-spacing:2px;text-transform:uppercase;">المسار الموصى به</div>
+        <div style="font-size:12px;color:#4e6f99;margin-top:2px;direction:rtl;">اتبع هالخطوات عشان تستفيد أكثر</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0;">
+
+      <div style="display:flex;gap:16px;align-items:flex-start;">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(0,224,138,0.15);border:2px solid #00e08a;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed';font-size:15px;font-weight:800;color:#00e08a;flex-shrink:0;">1</div>
+          <div style="width:2px;flex:1;background:rgba(255,255,255,0.06);margin:4px 0;min-height:28px;"></div>
+        </div>
+        <div style="padding-top:6px;padding-bottom:20px;direction:rtl;text-align:right;">
+          <div style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:#e8f2ff;letter-spacing:1px;">ابدأ بالـ Flashcards 🃏</div>
+          <div style="font-size:12px;color:#4e6f99;margin-top:4px;line-height:1.7;">تعرَّف على المصطلحات البحرية ومعانيها بالعربية. كرِّر الجولة أكثر من مرة حتى تُتقن معظمها.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:16px;align-items:flex-start;">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(245,200,66,0.12);border:2px solid #f5c842;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed';font-size:15px;font-weight:800;color:#f5c842;flex-shrink:0;">2</div>
+          <div style="width:2px;flex:1;background:rgba(255,255,255,0.06);margin:4px 0;min-height:28px;"></div>
+        </div>
+        <div style="padding-top:6px;padding-bottom:20px;direction:rtl;text-align:right;">
+          <div style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:#e8f2ff;letter-spacing:1px;">راجع بوضع الدراسة 📖</div>
+          <div style="font-size:12px;color:#4e6f99;margin-top:4px;line-height:1.7;">اختبر فهمك بالأسئلة. عند الخطأ، اقرأ الشرح جيداً لفهم سبب الإجابة الصحيحة.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:16px;align-items:flex-start;">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(26,92,176,0.2);border:2px solid #2979d4;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed';font-size:15px;font-weight:800;color:#2979d4;flex-shrink:0;">3</div>
+        </div>
+        <div style="padding-top:6px;direction:rtl;text-align:right;">
+          <div style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:#e8f2ff;letter-spacing:1px;">اختبر نفسك بوضع الامتحان 🎯</div>
+          <div style="font-size:12px;color:#4e6f99;margin-top:4px;line-height:1.7;">عند بلوغ ٨٠٪ في وضع الدراسة، انتقل إلى وضع الامتحان لمحاكاة الاختبار الحقيقي مع ضغط الوقت.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quick tips -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px 14px;direction:rtl;text-align:right;">
+      <div style="font-size:22px;margin-bottom:8px;">🔊</div>
+      <div style="font-family:'Barlow Condensed';font-size:12px;font-weight:700;color:#e8f2ff;letter-spacing:1px;margin-bottom:5px;">الصوت</div>
+      <div style="font-size:11px;color:#4e6f99;line-height:1.6;">يمكن تفعيل الأصوات أو إيقافها من خلال أيقونة 🔊 أعلى الشاشة أثناء الاختبار.</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px 14px;direction:rtl;text-align:right;">
+      <div style="font-size:22px;margin-bottom:8px;">🗂️</div>
+      <div style="font-family:'Barlow Condensed';font-size:12px;font-weight:700;color:#e8f2ff;letter-spacing:1px;margin-bottom:5px;">تصفية المواضيع</div>
+      <div style="font-size:11px;color:#4e6f99;line-height:1.6;">يمكن تحديد موضوع بعينه كـ"الاتجاهات البحرية" أو "الاقترانات اللغوية" من قائمة الإعداد.</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px 14px;direction:rtl;text-align:right;">
+      <div style="font-size:22px;margin-bottom:8px;">📊</div>
+      <div style="font-family:'Barlow Condensed';font-size:12px;font-weight:700;color:#e8f2ff;letter-spacing:1px;margin-bottom:5px;">سجل النتائج</div>
+      <div style="font-size:11px;color:#4e6f99;line-height:1.6;">تُحفظ النتائج تلقائياً بعد كل اختبار، ويعرض التقرير مواطن القوة والضعف بوضوح.</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px 14px;direction:rtl;text-align:right;">
+      <div style="font-size:22px;margin-bottom:8px;">🔄</div>
+      <div style="font-family:'Barlow Condensed';font-size:12px;font-weight:700;color:#e8f2ff;letter-spacing:1px;margin-bottom:5px;">خلط الأسئلة</div>
+      <div style="font-size:11px;color:#4e6f99;line-height:1.6;">فعِّل خيار "Shuffle Questions" من الإعدادات لتلقّي الأسئلة بترتيب مختلف في كل جلسة.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer style="text-align:center;padding:28px 0 14px;color:#2e4a72;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;position:relative;z-index:1;">
+  Made by <span style="color:#f5c842;font-weight:700;">Ahmad Krdaghli</span>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+// QUESTIONS DATA
+// ─────────────────────────────────────────────
+const allQuestions = [
+  // Fill in the gaps
+  { rule:"Fill in the Gaps", q:"The 3rd engineer (3/E) ________ to the chief engineer.", opts:["stands","operates","reports","keeps"], ans:2, exp:"المهندس الثالث يرفع تقريره للمهندس الرئيسي. (reports to = يرفع تقرير لـ)" },
+  { rule:"Fill in the Gaps", q:"The 3/E ________ a 12-hour watch.", opts:["does","stands","conns","supervises"], ans:1, exp:"يقف مناوبة — التعبير الصحيح هو 'stand a watch'." },
+  { rule:"Fill in the Gaps", q:"Every four hours the chief ________ a round of the engine spaces.", opts:["keeps","operates","does","reports"], ans:2, exp:"يقوم بجولة تفقد — التعبير الصحيح هو 'do a round'." },
+  { rule:"Fill in the Gaps", q:"The OOW ________ records of all changes of the ship's course.", opts:["keeps","stands","supervises","conns"], ans:0, exp:"يحتفظ بسجلات — التعبير الصحيح هو 'keep records'." },
+  { rule:"Fill in the Gaps", q:"The master ________ the vessel from the bridge.", opts:["operates","conns","reports","does"], ans:1, exp:"يدير السفينة من الجسر — التعبير الصحيح هو 'conn the vessel'." },
+  { rule:"Fill in the Gaps", q:"The second officer ________ the deck cadets.", opts:["stands","keeps","supervises","reports"], ans:2, exp:"يشرف على طلاب السطح — التعبير الصحيح هو 'supervise'." },
+  { rule:"Fill in the Gaps", q:"The able seaman ________ deck equipment.", opts:["operates","conns","does","stands"], ans:0, exp:"يشغل معدات السطح — التعبير الصحيح هو 'operate deck equipment'." },
+  // Collocations
+  { rule:"Collocations", q:"lubricate …", opts:["the crew","moving parts","wheel orders","watch"], ans:1, exp:"تشحيم الأجزاء المتحركة — 'lubricate moving parts'." },
+  { rule:"Collocations", q:"report …", opts:["to the captain","the ship","a record","rounds"], ans:0, exp:"يرفع تقرير للكابتن — 'report to the captain'." },
+  { rule:"Collocations", q:"conn …", opts:["the windlass","the ship","rounds","watch"], ans:1, exp:"إدارة السفينة — 'conn the ship'." },
+  { rule:"Collocations", q:"execute …", opts:["wheel orders","moving parts","the crew","a record"], ans:0, exp:"تنفيذ أوامر الدفة — 'execute wheel orders'." },
+  { rule:"Collocations", q:"do …", opts:["watch","rounds","the ship","to the captain"], ans:1, exp:"القيام بجولات التفقد — 'do rounds'." },
+  { rule:"Collocations", q:"supervise …", opts:["the crew","moving parts","a record","wheel orders"], ans:0, exp:"الإشراف على الطاقم — 'supervise the crew'." },
+  { rule:"Collocations", q:"stand …", opts:["a record","watch","the windlass","rounds"], ans:1, exp:"الوقوف في المناوبة — 'stand watch'." },
+  { rule:"Collocations", q:"operate …", opts:["the windlass","to the captain","the ship","rounds"], ans:0, exp:"تشغيل الونش — 'operate the windlass'." },
+  { rule:"Collocations", q:"keep …", opts:["a record","watch","the crew","moving parts"], ans:0, exp:"الاحتفاظ بسجل — 'keep a record'." },
+  // Words & phrases that mean the same
+  { rule:"Same Meaning", q:"What is the maritime term for 'works'?", opts:["operates","manoeuvres","berths","sails"], ans:0, exp:"'works' تعني يعمل أو يشتغل، والمصطلح البحري المكافئ هو 'operates'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'move carefully'?", opts:["manoeuvres","operates","sails","holds"], ans:0, exp:"'move carefully' يعني يتحرك بحذر، والمصطلح البحري هو 'manoeuvres'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'spaces for docking'?", opts:["holds","berths","galleys","complements"], ans:1, exp:"'spaces for docking' هي أماكن الرسو، وتُسمى 'berths'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'part above deck'?", opts:["superstructure","hold","galley","call sign"], ans:0, exp:"'part above deck' هو الجزء فوق سطح السفينة، ويُسمى 'superstructure'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'kitchen'?", opts:["hold","galley","berth","complement"], ans:1, exp:"المطبخ على السفينة يُسمى 'galley'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'two propellers'?", opts:["twin-screw","single-screw","superstructure","call sign"], ans:0, exp:"'two propellers' تعني سفينة لها مروحتان، وتُسمى 'twin-screw'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'space for cargo'?", opts:["galley","hold","superstructure","berth"], ans:1, exp:"مساحة تخزين البضائع تُسمى 'hold'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'number of crew'?", opts:["complement","flag","call sign","wreck"], ans:0, exp:"عدد أفراد الطاقم يُسمى 'complement'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'country of registration'?", opts:["call sign","flag","complement","hold"], ans:1, exp:"دولة تسجيل السفينة تُسمى 'flag'." },
+  { rule:"Same Meaning", q:"What is the maritime term for 'VHF radio identity'?", opts:["flag","call sign","complement","galley"], ans:1, exp:"هوية الراديو VHF تُسمى 'call sign'." },
+  // Nautical Directions
+  { rule:"Nautical Directions", q:"Left side looking forward", opts:["Starboard","Port","Beam","Astern"], ans:1, exp:"الجانب الأيسر عند النظر للأمام هو 'Port'." },
+  { rule:"Nautical Directions", q:"Right side looking forward", opts:["Port","Starboard","Amidships","Ahead"], ans:1, exp:"الجانب الأيمن عند النظر للأمام هو 'Starboard'." },
+  { rule:"Nautical Directions", q:"90° to the side", opts:["Astern","Beam","Quarter","Ahead"], ans:1, exp:"90 درجة على الجانب تُسمى 'Beam'." },
+  { rule:"Nautical Directions", q:"Behind the ship", opts:["Ahead","Astern","Amidships","Beam"], ans:1, exp:"خلف السفينة هو 'Astern'." },
+  { rule:"Nautical Directions", q:"In front of the ship", opts:["Ahead","Astern","Quarter","Beam"], ans:0, exp:"أمام السفينة هو 'Ahead'." },
+  { rule:"Nautical Directions", q:"The part of the ship to the side and rear", opts:["Amidships","Quarter","Beam","Ahead"], ans:1, exp:"الجزء الجانبي الخلفي هو 'Quarter'." },
+  { rule:"Nautical Directions", q:"The middle of the ship", opts:["Quarter","Amidships","Astern","Beam"], ans:1, exp:"وسط السفينة هو 'Amidships'." },
+  // Maritime Commands
+  { rule:"Maritime Commands", q:"A forward line needs making fast.", opts:["Let go the forward line","Make fast the forward line","Heave up the forward line","Stand by the forward line"], ans:1, exp:"يجب ربط الحبل الأمامي بإحكام — 'Make fast the forward line'." },
+  { rule:"Maritime Commands", q:"You need to release the anchor.", opts:["Heave up the anchor","Let go the anchor","Make fast the anchor","Ease the anchor"], ans:1, exp:"تحتاج إلى إفلات المرساة — 'Let go the anchor'." },
+  { rule:"Maritime Commands", q:"The man on line two should let it out a little.", opts:["Make fast line two","Ease line two","Heave line two","Single up line two"], ans:1, exp:"يرخي الحبل رقم اثنين قليلاً — 'Ease line two'." },
+  { rule:"Maritime Commands", q:"Hands must wait for orders.", opts:["Hands make fast","Hands stand by","Hands let go","Hands heave up"], ans:1, exp:"يجب على الطاقم الانتظار للأوامر — 'Hands stand by'." },
+  // Line and Anchor Orders
+  { rule:"Line & Anchor Orders", q:"What does 'Let go' mean?", opts:["raise","release","tie securely","get ready"], ans:1, exp:"'Let go' = أفلت / أطلق." },
+  { rule:"Line & Anchor Orders", q:"What does 'Single up' mean?", opts:["put away","release all but one","make tight","tie securely"], ans:1, exp:"'Single up' = تقليل الحبال إلى واحد فقط." },
+  { rule:"Line & Anchor Orders", q:"What does 'Slack away' mean?", opts:["raise","tie securely","to let out but not release","store"], ans:2, exp:"'Slack away' = إرخاء الحبل تدريجياً دون إفلات كامل." },
+  { rule:"Line & Anchor Orders", q:"What does 'Make fast' mean?", opts:["release","tie securely","raise","get ready"], ans:1, exp:"'Make fast' = ربط بإحكام." },
+  { rule:"Line & Anchor Orders", q:"What does 'Heave up' mean?", opts:["raise","release","let out","store"], ans:0, exp:"'Heave up' = ارفع (المرساة)." },
+  { rule:"Line & Anchor Orders", q:"What does 'Stand by' mean?", opts:["release","get ready / be prepared","tie securely","put away"], ans:1, exp:"'Stand by' = كن جاهزاً / استعد." },
+  { rule:"Line & Anchor Orders", q:"What does 'Take in' mean?", opts:["let out","make tight / take out slack","release","store"], ans:1, exp:"'Take in' = شد الحبل وإزالة الارتخاء." },
+  { rule:"Line & Anchor Orders", q:"What does 'Stow (away)' mean?", opts:["tie securely","put away / store","release","raise"], ans:1, exp:"'Stow away' = خزن أو رتب الحبال." },
+];
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let questions = [];
+let quizMode = 'exam';
+let current = 0;
+let correct = 0;
+let wrong = 0;
+let answered = [];
+let userAnswers = [];
+let timerInterval = null;
+let timeLeft = 60;
+let soundEnabled = true;
+let selectedRules = [];
+let quizActive = false;
+let lastConfig = {};
+
+// AudioContext for sounds
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playTone(freq, dur, type='sine', vol=0.2) {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.start(); osc.stop(ctx.currentTime + dur);
+  } catch(e) {}
+}
+function playCorrect() { playTone(880,0.12,'sine',0.18); setTimeout(()=>playTone(1100,0.18,'sine',0.14),90); }
+function playWrong() { playTone(220,0.25,'sawtooth',0.15); }
+function playTimeout() { playTone(440,0.12); setTimeout(()=>playTone(330,0.12),120); setTimeout(()=>playTone(220,0.3),240); }
+function playClick() { playTone(660,0.07,'square',0.1); }
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+function init() {
+  buildParticles();
+  loadHistory();
+}
+
+function buildParticles() {
+  const wrap = document.getElementById('particles');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100 + '%';
+    p.style.animationDuration = (12+Math.random()*18) + 's';
+    p.style.animationDelay = (Math.random()*20) + 's';
+    p.style.width = p.style.height = (1 + Math.random()*2) + 'px';
+    wrap.appendChild(p);
+  }
+}
+
+function buildRuleFilter() {
+  const rules = [...new Set(allQuestions.map(q => q.rule))];
+  selectedRules = [...rules];
+  const wrap = document.getElementById('ruleFilter');
+  wrap.innerHTML = '';
+  const allChip = document.createElement('div');
+  allChip.className = 'rule-chip selected';
+  allChip.textContent = 'All Rules';
+  allChip.onclick = () => toggleAllRules(rules);
+  wrap.appendChild(allChip);
+  rules.forEach(r => {
+    const chip = document.createElement('div');
+    chip.className = 'rule-chip selected';
+    chip.textContent = r;
+    chip.dataset.rule = r;
+    chip.onclick = () => toggleRule(r, chip);
+    wrap.appendChild(chip);
+  });
+}
+
+function toggleAllRules(rules) {
+  const allSelected = selectedRules.length === rules.length;
+  selectedRules = allSelected ? [] : [...rules];
+  document.querySelectorAll('.rule-chip[data-rule]').forEach(c => {
+    c.classList.toggle('selected', !allSelected);
+  });
+  document.querySelector('.rule-chip:not([data-rule])').classList.toggle('selected', !allSelected);
+}
+
+function toggleRule(rule, chip) {
+  const idx = selectedRules.indexOf(rule);
+  if (idx >= 0) selectedRules.splice(idx, 1);
+  else selectedRules.push(rule);
+  chip.classList.toggle('selected', idx < 0);
+  const allRules = [...new Set(allQuestions.map(q => q.rule))];
+  document.querySelector('.rule-chip:not([data-rule])').classList.toggle('selected', selectedRules.length === allRules.length);
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('soundBtn');
+  btn.textContent = soundEnabled ? '🔊' : '🔇';
+  btn.classList.toggle('active', soundEnabled);
+}
+
+// ─────────────────────────────────────────────
+// START QUIZ
+// ─────────────────────────────────────────────
+function startQuiz(mode) {
+  playClick();
+  quizMode = mode;
+  const numQ = parseInt(document.getElementById('numQSelect').value);
+  const order = document.getElementById('orderSelect').value;
+
+  let pool = [...allQuestions];
+  if (order === 'shuffle') pool = shuffleArray(pool);
+  questions = pool.slice(0, Math.min(numQ, pool.length));
+
+  lastConfig = { mode, numQ, order };
+
+  current = 0; correct = 0; wrong = 0;
+  answered = new Array(questions.length).fill(null);
+  userAnswers = new Array(questions.length).fill(-1);
+  quizActive = true;
+
+  document.getElementById('modeSelector').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('topControls').style.display = 'flex';
+  document.getElementById('statsBar').style.display = 'flex';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('qMap').style.display = 'flex';
+  document.getElementById('quizArea').style.display = 'block';
+
+  // Hide timer in study mode
+  document.getElementById('timerStat').style.display = (mode === 'study') ? 'none' : 'flex';
+
+  buildMap();
+  renderQuestion(0);
+  updateStats();
+  updateProgress();
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function backToMenu() {
+  clearTimer();
+  quizActive = false;
+  document.getElementById('flashcardArea').style.display = 'none';
+  document.getElementById('modeSelector').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('topControls').style.display = 'none';
+  document.getElementById('statsBar').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('qMap').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('quizArea').innerHTML = '';
+  loadHistory();
+}
+
+// ─────────────────────────────────────────────
+// TIMER
+// ─────────────────────────────────────────────
+function startTimer() {
+  if (quizMode === 'study') return;
+  clearTimer();
+  timeLeft = 60;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearTimer();
+      onTimeout();
+    }
+  }, 1000);
+}
+
+function clearTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function updateTimerDisplay() {
+  const mins = Math.floor(timeLeft / 60);
+  const secs = timeLeft % 60;
+  const display = mins + ':' + String(secs).padStart(2, '0');
+  const el = document.getElementById('timerVal');
+  if (el) {
+    el.textContent = display;
+    el.className = 'stat-val ' + (timeLeft <= 10 ? 'urgent' : timeLeft <= 20 ? 'red' : 'gold');
+  }
+  // Update ring in card if present
+  const circle = document.querySelector('.timer-circle');
+  if (circle) {
+    const pct = timeLeft / 60;
+    const offset = 82.47 * (1 - pct);
+    circle.style.strokeDashoffset = offset;
+    circle.className = 'timer-circle' + (timeLeft <= 10 ? ' danger' : timeLeft <= 20 ? ' warning' : '');
+  }
+}
+
+function onTimeout() {
+  playTimeout();
+  if (answered[current] !== null) return;
+  answered[current] = 'timeout';
+  wrong++;
+  userAnswers[current] = -1;
+  updateStats();
+  updateMap();
+  renderQuestion(current);
+}
+
+// ─────────────────────────────────────────────
+// QUESTION MAP
+// ─────────────────────────────────────────────
+function buildMap() {
+  const map = document.getElementById('qMap');
+  map.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'q-dot' + (i === 0 ? ' current' : '');
+    d.textContent = i + 1;
+    d.id = 'dot-' + i;
+    d.onclick = () => { if (answered[i] !== null || quizMode === 'study') goTo(i); };
+    if (answered[i] !== null || quizMode === 'study') d.classList.add('clickable');
+    map.appendChild(d);
+  });
+}
+
+function updateMap() {
+  questions.forEach((_, i) => {
+    const d = document.getElementById('dot-' + i);
+    if (!d) return;
+    d.className = 'q-dot';
+    if (i === current) d.classList.add('current');
+    const a = answered[i];
+    if (a === 'correct') d.classList.add('answered-correct');
+    if (a === 'wrong' || a === 'timeout') d.classList.add('answered-wrong');
+    if (a !== null || quizMode === 'study') d.classList.add('clickable');
+  });
+}
+
+function goTo(idx) {
+  clearTimer();
+  current = idx;
+  renderQuestion(idx);
+  updateMap();
+  if (answered[idx] === null && quizMode === 'exam') startTimer();
+}
+
+// ─────────────────────────────────────────────
+// RENDER QUESTION
+// ─────────────────────────────────────────────
+function renderQuestion(idx) {
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
+  const q = questions[idx];
+  const card = document.createElement('div');
+  card.className = 'question-card active' + (quizMode === 'study' ? ' study-mode' : '');
+
+  const letters = ['A','B','C','D'];
+  const isAnswered = answered[idx] !== null;
+  const isStudy = quizMode === 'study';
+
+  // Timer ring (exam only)
+  const timerHTML = (!isStudy) ? `
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+      <div class="timer-ring-wrap">
+        <svg class="timer-svg" width="30" height="30" viewBox="0 0 30 30">
+          <circle class="timer-circle-bg" cx="15" cy="15" r="13.14"/>
+          <circle class="timer-circle${timeLeft<=10?' danger':timeLeft<=20?' warning':''}"
+            cx="15" cy="15" r="13.14"
+            style="stroke-dashoffset:${82.47*(1-timeLeft/60)}"/>
+        </svg>
+      </div>
+    </div>` : '';
+
+  card.innerHTML = `
+    ${timerHTML}
+    <div class="q-header">
+      <div class="q-num">Q${idx+1} / ${questions.length}</div>
+      <div class="q-rule">${q.rule}</div>
+      <div class="mode-badge ${isStudy?'study-badge':'exam-badge'}">${isStudy?'📖 Study':'🎯 Exam'}</div>
+    </div>
+    <div class="q-text">${q.q}</div>
+    <div class="options" id="opts-${idx}">
+      ${q.opts.map((o, i) => {
+        let cls = 'option';
+        if (isAnswered) {
+          cls += ' disabled';
+          if (i === q.ans) cls += ' correct';
+          else if (userAnswers[idx] === i) cls += ' wrong';
+        }
+        return `<button class="${cls}"
+          onclick="selectAnswer(${idx}, ${i})"
+          ${isAnswered ? 'disabled' : ''}>
+          <span class="option-letter">${letters[i]}</span>
+          <span class="option-text">${o}</span>
+        </button>`;
+      }).join('')}
+    </div>
+    ${isStudy ? `<div class="study-explain"><strong>📖 Rule Reference:</strong> ${q.exp}</div>` : ''}
+    <div class="feedback ${isAnswered && !isStudy ? 'show ' + (answered[idx]==='correct'?'correct-fb':answered[idx]==='timeout'?'timeout-fb':'wrong-fb') : ''}" id="fb-${idx}">
+      ${isAnswered && !isStudy ? (
+        answered[idx]==='correct' ? `✅ <strong>Correct!</strong> ${q.exp}` :
+        answered[idx]==='timeout' ? `⏰ <strong>Time's Up!</strong> ${q.exp}` :
+        `❌ <strong>Wrong.</strong> ${q.exp}`
+      ) : ''}
+    </div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="goTo(${idx-1})" ${idx===0?'disabled':''}>← Prev</button>
+      ${idx < questions.length - 1
+        ? `<button class="btn btn-primary" onclick="goTo(${idx+1})" ${!isAnswered&&!isStudy?'disabled':''}>Next →</button>`
+        : `<button class="btn btn-gold" onclick="showResults()" ${!isAnswered&&!isStudy?'disabled':''} id="finishBtn">
+            Finish ${isStudy?'Study':'Exam'} →
+           </button>`
+      }
+    </div>`;
+
+  area.appendChild(card);
+  updateProgress();
+  if (!isStudy && !isAnswered) startTimer();
+  else clearTimer();
+}
+
+// ─────────────────────────────────────────────
+// SELECT ANSWER
+// ─────────────────────────────────────────────
+function selectAnswer(idx, chosen) {
+  if (answered[idx] !== null) return;
+  clearTimer();
+  const q = questions[idx];
+  userAnswers[idx] = chosen;
+  const isCorrect = chosen === q.ans;
+  answered[idx] = isCorrect ? 'correct' : 'wrong';
+  if (isCorrect) { correct++; playCorrect(); }
+  else { wrong++; playWrong(); }
+  updateStats();
+  updateMap();
+  renderQuestion(idx);
+}
+
+// ─────────────────────────────────────────────
+// STATS / PROGRESS
+// ─────────────────────────────────────────────
+function updateStats() {
+  const done = correct + wrong;
+  const remain = questions.length - done;
+  const pct = questions.length > 0 ? Math.round((correct / questions.length) * 100) : 0;
+  document.getElementById('st-score').textContent = pct + '%';
+  document.getElementById('st-correct').textContent = correct;
+  document.getElementById('st-wrong').textContent = wrong;
+  document.getElementById('st-remain').textContent = remain;
+}
+
+function updateProgress() {
+  const done = answered.filter(a => a !== null).length;
+  const pct = (done / questions.length) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// ─────────────────────────────────────────────
+// RESULTS
+// ─────────────────────────────────────────────
+function showResults() {
+  clearTimer();
+  quizActive = false;
+
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('qMap').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('statsBar').style.display = 'none';
+  document.getElementById('topControls').style.display = 'none';
+
+  const totalAnswered = quizMode === 'study' ? questions.length : correct + wrong;
+  const pct = Math.round((correct / questions.length) * 100);
+  const res = document.getElementById('results');
+  res.style.display = 'block';
+
+  // Animate score ring
+  const circumference = 2 * Math.PI * 70;
+  const circle = document.getElementById('scoreCircle');
+  const offset = circumference * (1 - pct / 100);
+  circle.style.strokeDasharray = circumference;
+  circle.style.strokeDashoffset = circumference;
+  let color;
+  if (pct >= 90) color = '#00e08a';
+  else if (pct >= 75) color = '#f5c842';
+  else if (pct >= 60) color = '#ff8c00';
+  else color = '#ff3d5a';
+  circle.style.stroke = color;
+  setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
+
+  document.getElementById('scoreNum').textContent = pct + '%';
+
+  let grade, msg;
+  if (pct >= 90) { grade = '🏆 Outstanding'; msg = 'Exceptional knowledge of the Rules of the Road.'; }
+  else if (pct >= 75) { grade = '✅ Competent'; msg = 'Good understanding — review the missed rules.'; }
+  else if (pct >= 60) { grade = '⚠ Marginal'; msg = 'Borderline pass — study more carefully before your exam.'; }
+  else { grade = '❌ Needs Work'; msg = 'Review the COLREGS rules and retake the exam.'; }
+
+  document.getElementById('resultGrade').textContent = grade;
+  document.getElementById('resultGrade').style.color = color;
+  document.getElementById('resultMsg').textContent = msg;
+  document.getElementById('resultScoreLine').textContent = `${correct} / ${questions.length} correct · ${pct}%`;
+
+  // Rule analysis chart
+  buildRuleChart();
+
+  // Attempt stats
+  buildAttemptStats(pct);
+
+  // Wrong list (exam mode only)
+  if (quizMode === 'exam') {
+    const wrongQ = questions.filter((_, i) => answered[i] === 'wrong' || answered[i] === 'timeout');
+    const wl = document.getElementById('wrongList');
+    if (wrongQ.length > 0) {
+      wl.style.display = 'block';
+      document.getElementById('wrongItems').innerHTML =
+        wrongQ.map(q => `<div class="wrong-item"><span>${q.rule}:</span> ${q.q}</div>`).join('');
+    } else { wl.style.display = 'none'; }
+  } else {
+    document.getElementById('wrongList').style.display = 'none';
+  }
+
+  // Save to history
+  saveHistory(pct, questions.length, correct);
+  loadHistory();
+}
+
+function buildRuleChart() {
+  const ruleMap = {};
+  questions.forEach((q, i) => {
+    if (!ruleMap[q.rule]) ruleMap[q.rule] = { total: 0, correct: 0 };
+    ruleMap[q.rule].total++;
+    if (answered[i] === 'correct') ruleMap[q.rule].correct++;
+  });
+  const html = Object.entries(ruleMap).map(([rule, data]) => {
+    const pct = Math.round((data.correct / data.total) * 100);
+    const cls = pct === 100 ? 'full' : pct === 0 ? 'zero' : 'partial';
+    return `<div class="rule-bar-row">
+      <div class="rule-bar-label" style="font-size:10px;min-width:64px">${rule}</div>
+      <div class="rule-bar-track"><div class="rule-bar-fill ${cls}" style="width:${Math.max(pct,5)}%"></div></div>
+      <div style="font-family:'Barlow Condensed';font-size:12px;font-weight:700;color:${cls==='full'?'#00e08a':cls==='zero'?'#ff3d5a':'#f5c842'};min-width:32px;text-align:right">${pct}%</div>
+    </div>`;
+  }).join('');
+  document.getElementById('ruleChart').innerHTML = html;
+}
+
+function buildAttemptStats(pct) {
+  const timeouts = quizMode === 'exam' ? answered.filter(a => a === 'timeout').length : 0;
+  document.getElementById('attemptStats').innerHTML = `
+    <div class="rule-bar-row"><span style="color:var(--fog);font-size:13px">Mode</span><span style="margin-left:auto;font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--signal-white)">${quizMode === 'study' ? '📖 Study' : '🎯 Exam'}</span></div>
+    <div class="rule-bar-row" style="margin-top:8px"><span style="color:var(--fog);font-size:13px">Questions</span><span style="margin-left:auto;font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--signal-white)">${questions.length}</span></div>
+    <div class="rule-bar-row" style="margin-top:8px"><span style="color:var(--fog);font-size:13px">Correct</span><span style="margin-left:auto;font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--signal-green)">${correct}</span></div>
+    <div class="rule-bar-row" style="margin-top:8px"><span style="color:var(--fog);font-size:13px">Wrong</span><span style="margin-left:auto;font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--signal-red)">${wrong}</span></div>
+    ${timeouts > 0 ? `<div class="rule-bar-row" style="margin-top:8px"><span style="color:var(--fog);font-size:13px">Timed Out</span><span style="margin-left:auto;font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--gold)">${timeouts}</span></div>` : ''}
+  `;
+}
+
+// ─────────────────────────────────────────────
+// LOCAL STORAGE HISTORY
+// ─────────────────────────────────────────────
+function saveHistory(pct, total, correct) {
+  let history = JSON.parse(localStorage.getItem('colregs_history') || '[]');
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  history.unshift({ date: dateStr, pct, total, correct, mode: quizMode });
+  if (history.length > 10) history = history.slice(0, 10);
+  localStorage.setItem('colregs_history', JSON.stringify(history));
+}
+
+function loadHistory() {
+  const history = JSON.parse(localStorage.getItem('colregs_history') || '[]');
+  const wrap = document.getElementById('historyList');
+  const items = document.getElementById('historyItems');
+  if (history.length === 0) {
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = 'block';
+  const colorFor = p => p >= 90 ? '#00e08a' : p >= 75 ? '#f5c842' : p >= 60 ? '#ff8c00' : '#ff3d5a';
+  items.innerHTML = history.map(h =>
+    `<div class="history-item">
+      <span class="h-date">${h.date} · ${h.mode || 'exam'}</span>
+      <span class="h-score" style="color:${colorFor(h.pct)}">${h.pct}% <span style="color:var(--muted);font-size:12px">(${h.correct}/${h.total})</span></span>
+    </div>`
+  ).join('');
+}
+
+// ─────────────────────────────────────────────
+// RESTART
+// ─────────────────────────────────────────────
+function restartQuiz() {
+  clearTimer();
+  startQuiz(lastConfig.mode || 'exam');
+}
+
+
+// ─────────────────────────────────────────────
+// FLASHCARD DATA (Arabic Maritime Terms)
+// ─────────────────────────────────────────────
+const flashcards = [
+  // Nautical Directions
+  { term:"Port", category:"الاتجاهات البحرية", arabic:"يسار / ميناء", explanation:"الجانب الأيسر من السفينة عند النظر إلى الأمام. يُرمز له باللون الأحمر.", example:"Turn to port = اتجه يساراً" },
+  { term:"Starboard", category:"الاتجاهات البحرية", arabic:"يمين / ستاربورد", explanation:"الجانب الأيمن من السفينة عند النظر إلى الأمام. يُرمز له باللون الأخضر.", example:"Hard starboard = دفة كاملة يميناً" },
+  { term:"Ahead", category:"الاتجاهات البحرية", arabic:"للأمام", explanation:"الاتجاه أمام مقدمة السفينة مباشرة.", example:"Full ahead = أقصى سرعة للأمام" },
+  { term:"Astern", category:"الاتجاهات البحرية", arabic:"للخلف / الكبش", explanation:"الاتجاه خلف مؤخرة السفينة مباشرة.", example:"Full astern = تراجع بأقصى سرعة" },
+  { term:"Beam", category:"الاتجاهات البحرية", arabic:"عرض السفينة / الجانب", explanation:"الاتجاه العمودي على جانب السفينة بزاوية 90 درجة.", example:"Ship on the beam = سفينة على جانبنا" },
+  { term:"Quarter", category:"الاتجاهات البحرية", arabic:"الربع الخلفي", explanation:"المنطقة الجانبية الخلفية من السفينة، بين العرض والمؤخرة.", example:"Ship on the quarter = سفينة في الربع الخلفي" },
+  { term:"Amidships", category:"الاتجاهات البحرية", arabic:"وسط السفينة", explanation:"مركز السفينة أو وضع الدفة في المنتصف.", example:"Helm amidships = الدفة في المركز" },
+  // Maritime Commands
+  { term:"Make fast", category:"أوامر بحرية", arabic:"أربط بإحكام", explanation:"أمر بربط الحبال أو الأوساط بشكل محكم لتأمين السفينة.", example:"Make fast all lines = اربط جميع الحبال" },
+  { term:"Let go", category:"أوامر بحرية", arabic:"أفلت / أطلق", explanation:"أمر بالإفراج عن الحبال أو إطلاق المرساة.", example:"Let go the anchor = أفلت المرساة" },
+  { term:"Stand by", category:"أوامر بحرية", arabic:"كن جاهزاً / استعد", explanation:"أمر للطاقم بالتأهب والاستعداد لتلقي الأوامر.", example:"Hands stand by = الطاقم يستعد" },
+  { term:"Heave up", category:"أوامر بحرية", arabic:"ارفع / اسحب للأعلى", explanation:"أمر برفع المرساة أو شد الحبال للأعلى.", example:"Heave up the anchor = ارفع المرساة" },
+  { term:"Ease", category:"أوامر بحرية", arabic:"أرخِ قليلاً", explanation:"أمر بإرخاء الحبل تدريجياً دون الإفراج الكامل عنه.", example:"Ease line two = أرخِ الحبل رقم اثنين" },
+  { term:"Single up", category:"أوامر بحرية", arabic:"قلّل إلى حبل واحد", explanation:"أمر بسحب الحبال الزائدة وإبقاء حبل واحد فقط لكل وضع.", example:"Single up all lines = قلّل كل الحبال لواحد" },
+  { term:"Slack away", category:"أوامر بحرية", arabic:"أرخِ تدريجياً", explanation:"إرخاء الحبل ببطء دون الإفراج عنه كلياً.", example:"Slack away the mooring line = أرخِ حبل الرسو" },
+  { term:"Take in", category:"أوامر بحرية", arabic:"شدّ / سحب الارتخاء", explanation:"أمر بشد الحبل لإزالة الترهل وإبقائه مشدوداً.", example:"Take in the slack = أزل الارتخاء من الحبل" },
+  { term:"Stow away", category:"أوامر بحرية", arabic:"خزّن / رتّب", explanation:"أمر بتخزين الحبال والمعدات وترتيبها في مكانها الصحيح.", example:"Stow away the lines = خزّن الحبال" },
+  // Collocations
+  { term:"Conn the ship", category:"مصطلحات التشغيل", arabic:"يقود السفينة / يوجّهها", explanation:"إدارة وتوجيه السفينة من الجسر عبر إعطاء الأوامر للدفة والمحركات.", example:"The master conns the vessel from the bridge = الربان يقود السفينة من الجسر" },
+  { term:"Stand a watch", category:"مصطلحات التشغيل", arabic:"يقف مناوبة", explanation:"القيام بمناوبة محددة على ظهر السفينة أو في غرفة الآلات.", example:"He stands the 12-hour watch = يقف مناوبة 12 ساعة" },
+  { term:"Keep a record", category:"مصطلحات التشغيل", arabic:"يحتفظ بسجل", explanation:"تسجيل وحفظ البيانات والمعلومات المهمة في سجلات السفينة.", example:"The OOW keeps records of all course changes" },
+  { term:"Do rounds", category:"مصطلحات التشغيل", arabic:"يقوم بجولات تفقد", explanation:"جولة تفتيشية دورية على أجزاء السفينة للتأكد من سلامتها.", example:"The chief does rounds of the engine spaces" },
+  { term:"Report to", category:"مصطلحات التشغيل", arabic:"يرفع تقرير لـ", explanation:"رفع التقارير والمعلومات إلى مسؤول أعلى في التسلسل القيادي.", example:"The 3/E reports to the chief engineer" },
+  { term:"Supervise the crew", category:"مصطلحات التشغيل", arabic:"يشرف على الطاقم", explanation:"مراقبة وتوجيه أعمال أفراد الطاقم وضمان تنفيذها بشكل صحيح.", example:"The 2/O supervises the deck cadets" },
+  { term:"Operate the windlass", category:"مصطلحات التشغيل", arabic:"يشغّل الونش / رافعة المرساة", explanation:"تشغيل الونش الخاص برفع وإنزال المرساة والحبال.", example:"The AB operates deck equipment" },
+  { term:"Lubricate moving parts", category:"مصطلحات التشغيل", arabic:"يشحم الأجزاء المتحركة", explanation:"وضع الزيت أو الشحم على الأجزاء المتحركة لمنع الاحتكاك.", example:"Lubricate all moving parts regularly" },
+  { term:"Execute wheel orders", category:"مصطلحات التشغيل", arabic:"ينفّذ أوامر الدفة", explanation:"تنفيذ الأوامر المعطاة للدفة من الجسر بدقة وسرعة.", example:"Execute wheel orders promptly" },
+  // Ship Vocabulary
+  { term:"Superstructure", category:"مصطلحات السفينة", arabic:"البناء الفوقي", explanation:"الجزء الظاهر من السفينة فوق سطح الميناء، ويشمل الجسر والغرف والمداخن.", example:"The superstructure is above the main deck" },
+  { term:"Hold", category:"مصطلحات السفينة", arabic:"عنبر البضائع", explanation:"المساحة الداخلية في جسم السفينة المخصصة لتخزين البضائع.", example:"The cargo is stored in the hold" },
+  { term:"Galley", category:"مصطلحات السفينة", arabic:"المطبخ على السفينة", explanation:"المطبخ الموجود على متن السفينة حيث يُعدّ الطعام للطاقم.", example:"Food is prepared in the galley" },
+  { term:"Berth", category:"مصطلحات السفينة", arabic:"مرسى / رصيف", explanation:"مكان رسو السفينة في الميناء، أو السرير في غرفة الطاقم.", example:"The ship is at berth number 3" },
+  { term:"Twin-screw", category:"مصطلحات السفينة", arabic:"ذات مروحتين", explanation:"سفينة مزودة بمروحتي دفع (بروبلر) للتحكم الأفضل في التوجيه والقوة.", example:"A twin-screw vessel has better maneuverability" },
+  { term:"Complement", category:"مصطلحات السفينة", arabic:"عدد الطاقم الكامل", explanation:"العدد الإجمالي لأفراد الطاقم اللازمين لتشغيل السفينة بأمان.", example:"The full complement is 25 officers and crew" },
+  { term:"Flag", category:"مصطلحات السفينة", arabic:"دولة التسجيل / علم السفينة", explanation:"الدولة التي سُجّلت فيها السفينة وترفع علمها، وتخضع لقوانينها.", example:"What flag does the vessel fly?" },
+  { term:"Call sign", category:"مصطلحات السفينة", arabic:"رمز النداء / هوية الراديو", explanation:"الرمز الفريد الذي يُعرّف السفينة على ترددات الراديو VHF.", example:"What is your call sign?" },
+  { term:"Manoeuvre", category:"مصطلحات السفينة", arabic:"يناور / يتحرك بحذر", explanation:"تحريك السفينة بعناية ودقة في أماكن ضيقة أو عند الرسو.", example:"The vessel manoeuvred carefully into port" },
+];
+
+// ─────────────────────────────────────────────
+// FLASHCARD STATE
+// ─────────────────────────────────────────────
+let fcCards = [];
+let fcIndex = 0;
+let fcFlipped = false;
+let fcKnew = 0;
+let fcUnsure = 0;
+let fcAgain = 0;
+
+// ─────────────────────────────────────────────
+// FLASHCARD FUNCTIONS
+// ─────────────────────────────────────────────
+function startFlashcards() {
+  playClick();
+  // Shuffle cards
+  fcCards = [...flashcards].sort(() => Math.random() - 0.5);
+  fcIndex = 0;
+  fcFlipped = false;
+  fcKnew = 0;
+  fcUnsure = 0;
+  fcAgain = 0;
+
+  document.getElementById('modeSelector').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('qMap').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('statsBar').style.display = 'none';
+  document.getElementById('topControls').style.display = 'none';
+  document.getElementById('flashcardArea').style.display = 'block';
+
+  renderFlashcard();
+}
+
+function renderFlashcard(direction) {
+  const area = document.getElementById('flashcardArea');
+  const card = fcCards[fcIndex];
+  const total = fcCards.length;
+  const pct = Math.round((fcIndex / total) * 100);
+
+  area.innerHTML = `
+    <div class="fc-header">
+      <div class="fc-title">🃏 Flash<span>cards</span></div>
+      <div class="fc-counter">${fcIndex + 1} / ${total}</div>
+    </div>
+
+    <div class="fc-stats-row">
+      <div class="fc-stat">
+        <div class="fc-stat-val green">${fcKnew}</div>
+        <div class="fc-stat-lbl">✅ عرفتها</div>
+      </div>
+      <div class="fc-stat">
+        <div class="fc-stat-val yellow">${fcUnsure}</div>
+        <div class="fc-stat-lbl">🤔 غير متأكد</div>
+      </div>
+      <div class="fc-stat">
+        <div class="fc-stat-val" style="color:var(--signal-red)">${fcAgain}</div>
+        <div class="fc-stat-lbl">🔄 مرة أخرى</div>
+      </div>
+    </div>
+
+    <div class="fc-progress-row">
+      <div class="fc-progress-track">
+        <div class="fc-progress-fill" style="width:${pct}%"></div>
+      </div>
+      <span style="font-family:'Barlow Condensed';font-size:12px;color:var(--muted);min-width:36px;text-align:right">${pct}%</span>
+    </div>
+
+    <div class="fc-scene${fcFlipped ? ' flipped' : ''}" id="fcScene" onclick="flipCard()">
+      <div class="fc-card-inner">
+        <!-- FRONT -->
+        <div class="fc-face fc-front">
+          <div class="fc-category-tag">${card.category}</div>
+          <div class="fc-term">${card.term}</div>
+          <div class="fc-tap-hint">اضغط لرؤية المعنى</div>
+        </div>
+        <!-- BACK -->
+        <div class="fc-face fc-back">
+          <div class="fc-category-tag">${card.category}</div>
+          <div class="fc-arabic-term">${card.arabic}</div>
+          <div class="fc-divider-line"></div>
+          <div class="fc-explanation" dir="rtl">
+            <div class="fc-example-label">الشرح</div>
+            ${card.explanation}
+            ${card.example ? `<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);"><div class="fc-example-label">مثال</div><span style="color:var(--gold);font-style:italic">${card.example}</span></div>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fc-rating" id="fcRating" style="display:${fcFlipped ? 'flex' : 'none'}">
+      <button class="fc-rate-btn knew" onclick="rateCard('knew')">✅ عرفتها</button>
+      <button class="fc-rate-btn unsure" onclick="rateCard('unsure')">🤔 غير متأكد</button>
+      <button class="fc-rate-btn again" onclick="rateCard('again')">🔄 مرة أخرى</button>
+    </div>
+
+    <div class="fc-nav-row">
+      <button class="fc-nav-btn" onclick="fcNavigate(-1)" ${fcIndex === 0 ? 'disabled' : ''}>← السابق</button>
+      <button class="fc-nav-btn" onclick="flipCard()">↻ اقلب</button>
+      <button class="fc-nav-btn primary" onclick="fcNavigate(1)" ${fcIndex === total - 1 ? 'disabled' : ''}>التالي →</button>
+    </div>
+
+    <div style="text-align:center;margin-top:16px">
+      <button onclick="backToMenu()" style="background:none;border:none;color:var(--muted);font-family:'Barlow',sans-serif;font-size:12px;cursor:pointer;letter-spacing:1px;text-decoration:underline;opacity:0.7">🏠 العودة للقائمة</button>
+    </div>
+  `;
+}
+
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  const scene = document.getElementById('fcScene');
+  if (scene) {
+    scene.classList.toggle('flipped', fcFlipped);
+    document.getElementById('fcRating').style.display = fcFlipped ? 'flex' : 'none';
+  }
+  playClick();
+}
+
+function rateCard(rating) {
+  if (rating === 'knew') fcKnew++;
+  else if (rating === 'unsure') fcUnsure++;
+  else fcAgain++;
+
+  if (rating === 'knew' || rating === 'unsure') {
+    if (fcIndex < fcCards.length - 1) {
+      fcNavigate(1);
+    } else {
+      showFlashcardDone();
+    }
+  } else {
+    // Add this card to the end of the deck to review again
+    const revisit = fcCards.splice(fcIndex, 1)[0];
+    fcCards.push(revisit);
+    if (fcIndex >= fcCards.length) fcIndex = fcCards.length - 1;
+    fcFlipped = false;
+    renderFlashcard();
+  }
+}
+
+function fcNavigate(dir) {
+  const newIdx = fcIndex + dir;
+  if (newIdx < 0 || newIdx >= fcCards.length) return;
+  fcFlipped = false;
+  fcIndex = newIdx;
+  renderFlashcard(dir > 0 ? 'right' : 'left');
+  playClick();
+}
+
+function showFlashcardDone() {
+  const area = document.getElementById('flashcardArea');
+  const total = fcKnew + fcUnsure + fcAgain;
+  const pct = total > 0 ? Math.round((fcKnew / total) * 100) : 0;
+  const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '⭐' : '📚';
+  const msg = pct >= 80 ? 'أداء رائع! أتقنت معظم المصطلحات.' : pct >= 60 ? 'جيد جداً، استمر في المراجعة.' : 'لا بأس، التكرار هو مفتاح النجاح!';
+
+  area.innerHTML = `
+    <div class="fc-done">
+      <div class="fc-done-icon">${emoji}</div>
+      <h2>أحسنت! انتهيت من الجولة</h2>
+      <p style="color:var(--muted);font-size:14px;margin-top:6px">${msg}</p>
+      <div class="fc-done-stats">
+        <div class="fc-done-stat">
+          <div class="fc-done-stat-val" style="color:var(--signal-green)">${fcKnew}</div>
+          <div class="fc-done-stat-lbl">✅ عرفتها</div>
+        </div>
+        <div class="fc-done-stat">
+          <div class="fc-done-stat-val" style="color:var(--gold)">${fcUnsure}</div>
+          <div class="fc-done-stat-lbl">🤔 غير متأكد</div>
+        </div>
+        <div class="fc-done-stat">
+          <div class="fc-done-stat-val" style="color:var(--signal-red)">${fcAgain}</div>
+          <div class="fc-done-stat-lbl">🔄 مراجعة</div>
+        </div>
+        <div class="fc-done-stat">
+          <div class="fc-done-stat-val" style="color:var(--horizon)">${pct}%</div>
+          <div class="fc-done-stat-lbl">📊 نسبة الإتقان</div>
+        </div>
+      </div>
+      <div class="fc-done-btns">
+        <button class="fc-nav-btn primary" onclick="startFlashcards()" style="padding:14px 28px;font-size:15px">🔄 جولة جديدة</button>
+        <button class="fc-nav-btn" onclick="backToMenu()" style="padding:14px 28px;font-size:15px">🏠 القائمة الرئيسية</button>
+      </div>
+    </div>
+  `;
+}
+
+
+// ─────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
